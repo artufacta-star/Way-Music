@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Way Music: source code for a listener-only music streaming app</title>
+<meta name="description" content="Complete source code of a SoundCloud-style streaming app: Expo / React Native client, Node.js API, five open music catalogs, optional crypto Premium.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f6;--ink:#101828;--mute:#4b5565;--line:#cfd6e2;--accent:#3b3bdb;--on-accent:#fff;--panel:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1220;--ink:#eef1f8;--mute:#a4adc2;--line:#2a3050;--accent:#8c8cff;--on-accent:#0f1220;--panel:#171b30}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.6 "Source Sans 3",system-ui,sans-serif;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+main{max-width:760px;margin:0 auto;padding:56px 22px 72px}
+h1,h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.1;letter-spacing:-.02em}
+h1{font-size:clamp(2.4rem,7vw,3.6rem);font-weight:800;margin:0 0 18px}
+h2{font-size:1.5rem;font-weight:700;margin:48px 0 12px}
+p{margin:0 0 14px;max-width:62ch}
+.lead{font-size:1.2rem;color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 0}
+a.btn{display:inline-block;padding:13px 22px;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid var(--accent)}
+a.main{background:var(--accent);color:var(--on-accent)}
+a.alt{color:var(--accent)}
+a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wave{display:flex;align-items:center;gap:5px;height:56px;margin:0 0 26px}
+.wave i{display:block;width:6px;border-radius:3px;background:var(--accent)}
+ul{padding-left:1.2em;margin:0 0 14px}
+li{margin:6px 0}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-top:12px}
+.box h3{margin:0 0 8px;font:700 1.05rem "Bricolage Grotesque",system-ui,sans-serif}
+.box ul{margin:0}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:.95rem}
+</style>
+</head>
+<body>
+<main>
+  <div class="wave" aria-hidden="true">
+    <i style="height:14px"></i><i style="height:30px"></i><i style="height:48px"></i><i style="height:22px"></i><i style="height:40px"></i><i style="height:56px"></i><i style="height:26px"></i><i style="height:44px"></i><i style="height:18px"></i><i style="height:34px"></i><i style="height:50px"></i><i style="height:20px"></i>
+  </div>
+
+  <h1>Way Music</h1>
+  <p class="lead">Complete source code of a listener-only music streaming app: Expo / React Native client, Node.js API, five open music catalogs and an optional crypto Premium plan.</p>
+
+  <div class="btns">
+    <a class="btn main" href="https://youtu.be/PkK6GJPEkZ0?si=kE7cSJzyZm05174O">Watch the demo on YouTube</a>
+    <a class="btn alt" href="https://drive.google.com/file/d/1tshv2W6FZRukxZi6TMoHm4AzVE0z03rI/view?usp=drive_link">Demo on Google Drive</a>
+    <a class="btn alt" href="mailto:artufacta@gmail.com">Contact the owner</a>
+  </div>
+
+  <h2>What the app does</h2>
+  <ul>
+    <li>Sign-up and login, Home, Feed, Search, Library and Profile</li>
+    <li>Mini and full player, likes, follows, playlists, artist radio, history</li>
+    <li>Charts by country and music by region</li>
+    <li>Free plan with a daily download limit; Premium adds themes, playback speed, sleep timer and stats</li>
+    <li>Rate limiting, signed short-lived media links, secret checks at startup</li>
+  </ul>
+
+  <h2>Where the music comes from</h2>
+  <p>There is no artist upload. Tracks come from Audius, Jamendo, Openverse, ccMixter and the Internet Archive, filtered by licence so only commercially usable tracks are kept.</p>
+
+  <h2>Premium without a payment processor</h2>
+  <p>Premium costs $3 per month, $8 per 3 months or $20 per year. Users pay in USDT or USDC on Ethereum, BNB Chain or Solana straight to the owner's wallet, and the API verifies the transaction on-chain.</p>
+
+  <h2>What you get</h2>
+  <ul>
+    <li>Mobile app, Node.js API and web client source code</li>
+    <li>Docker and Render deployment kit</li>
+    <li>Deployment guide, buyer guide, API and architecture notes</li>
+    <li>Web client screenshots and app icon source files</li>
+  </ul>
+
+  <h2>Honest status</h2>
+  <div class="box">
+    <h3>Tested</h3>
+    <ul>
+      <li>Login, catalog, search and playback in Expo Go on a real Android phone</li>
+      <li>Catalog mappers and region logic (unit tests); web client in a browser against a mock API</li>
+    </ul>
+  </div>
+  <div class="box">
+    <h3>Not tested or not included</h3>
+    <ul>
+      <li>Importers and on-chain payment verification are not verified end to end on live services</li>
+      <li>Jamendo's free API is non-commercial: a commercial launch needs an agreement or that source disabled</li>
+      <li>App Store and Google Play require their own billing, so crypto payments in store builds may be rejected</li>
+      <li>No email verification, password reset, admin web UI, real offline downloads or legal pages</li>
+    </ul>
+  </div>
+  <p style="margin-top:14px">This is source code and documentation, not a running business: no users, revenue, store listing or domain.</p>
+
+  <h2>Tech stack</h2>
+  <p>TypeScript, Expo, React Native, expo-audio, Node.js, Express, Prisma, PostgreSQL, Docker.</p>
+
+  <footer>Way Music by PingVin4ik. Questions? <a href="mailto:artufacta@gmail.com">artufacta@gmail.com</a></footer>
+</main>
+</body>
+</html>
